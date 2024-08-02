@@ -3,11 +3,11 @@ import CustomButton from './button'
 import './button.css'
 
 const ButtonModalActions = () => {
-  const { createItem, closeModal } = useClientContext()
+  const { closeModal } = useClientContext()
 
   return (
     <div className='button-actions-container'>
-      <CustomButton id='salvar' classNames='button bege' onClick={createItem}>
+      <CustomButton id='salvar' classNames='button bege' type='submit'>
         Salvar
       </CustomButton>
       <CustomButton id='cancelar' classNames='button blue' onClick={closeModal}>

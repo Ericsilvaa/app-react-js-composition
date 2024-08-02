@@ -1,29 +1,27 @@
 import PropTypes from 'prop-types'
-import React from 'react'
 import { useClientContext } from '../../hooks/useClientContext'
 import CustomButton from './button'
 import './button.css'
 
-const BodyActions = ({ renderButtons, clientId }) => {
-  const { openModal, deleteItem } = useClientContext()
+const BodyActions = ({ renderActions, clientId }) => {
+  const { deleteItem, getById } = useClientContext()
 
-  const handleClick = React.useCallback((btn) => {
+  const handleClick = (btn) => {
     const handleDeleteItem = () => {
-      if (!btn.clientId) return
       deleteItem(clientId)
     }
 
     const handleOpenModal = () => {
-      openModal(btn.clientId)
+      getById(btn.clientId)
     }
 
     return btn.id === 'editar' ? handleOpenModal : handleDeleteItem
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }
 
   return (
     <div className='button-actions-container'>
-      {renderButtons.map((btn) => (
+      {renderActions.map((btn) => (
         <CustomButton
           key={btn.id}
           id={btn.id}
@@ -38,13 +36,7 @@ const BodyActions = ({ renderButtons, clientId }) => {
 }
 
 BodyActions.propTypes = {
-  renderButtons: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-      color: PropTypes.string.isRequired
-    })
-  ).isRequired,
+  renderActions: PropTypes.array,
   clientId: PropTypes.number
 }
 
