@@ -2,11 +2,11 @@ import { useClientContext } from '../../hooks/useClientContext'
 import './modal.css'
 
 const ModalHeader = () => {
-  const { closeModal } = useClientContext()
+  const { closeModal, isClientEdit } = useClientContext()
 
   return (
     <header className='modal-header'>
-      <h2>Novo Cliente</h2>
+      <h2>{isClientEdit ? 'Editar Cliente' : 'Novo Cliente'}</h2>
       <button
         type='button'
         className='modal-close'
