@@ -1,33 +1,34 @@
-import PropTypes from 'prop-types'
-import BodyActions from '../button/ButtonActions'
+import { actionsTable } from '../../constants/data-table'
+import { useClientContext } from '../../hooks/useClientContext'
 import './records.css'
+import TableEmpty from './TableEmpty'
+import TableRow from './TableRow'
 
-const TableBody = ({ data }) => {
+const TableBody = () => {
+  const { items } = useClientContext()
+
+  const itemsEmpty = !items.length
+
+  const dataItems = items.map((item) => ({
+    id: item.id,
+    nome: item.nome,
+    email: item.email,
+    celular: item.celular,
+    cidade: item.cidade,
+    actions: actionsTable
+  }))
+
   return (
     <tbody className='table-container'>
-      {data.map((row, rowIndex) => {
-        return (
+      {itemsEmpty && <TableEmpty />}
+      {!itemsEmpty &&
+        dataItems.map((row, rowIndex) => (
           <tr className='tr-records' key={rowIndex}>
-            {Object.entries(row).map(([key, value], cellIndex) => {
-              if (key !== 'ações') {
-                return <td key={cellIndex}>{value}</td>
-              } else {
-                return (
-                  <td key={cellIndex}>
-                    <BodyActions renderButtons={value} clientId={row.id} />
-                  </td>
-                )
-              }
-            })}
+            <TableRow row={row} />
           </tr>
-        )
-      })}
+        ))}
     </tbody>
   )
-}
-
-TableBody.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object).isRequired
 }
 
 export default TableBody
