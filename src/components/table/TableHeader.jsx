@@ -1,11 +1,11 @@
-import PropTypes from 'prop-types'
+import { columnsTable } from '../../constants/data-table'
 import './records.css'
 
-const TableHeader = ({ columns }) => {
+const TableHeader = () => {
   return (
     <thead className='table-header'>
       <tr className='tr-records'>
-        {columns.map((column, index) => (
+        {columnsTable.map((column, index) => (
           <th className='th-header' key={index}>
             <span>{column}</span>
           </th>
@@ -13,10 +13,6 @@ const TableHeader = ({ columns }) => {
       </tr>
     </thead>
   )
-}
-
-TableHeader.propTypes = {
-  columns: PropTypes.arrayOf(PropTypes.string).isRequired
 }
 
 export default TableHeader

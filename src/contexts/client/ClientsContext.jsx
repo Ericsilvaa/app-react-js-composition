@@ -1,5 +1,11 @@
 /* eslint-disable react/prop-types */
-import { createContext, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
+import {
+  createClient,
+  deleteClientById,
+  readClient,
+  updateClient
+} from '../../utils/crud-utils'
 
 export const ClientContext = createContext()
 
@@ -8,48 +14,86 @@ export const ClientProvider = ({ children }) => {
   const [isClientEdit, setIsClientEdit] = useState(null) // null or Client ID
   const [items, setItems] = useState([]) // array
 
-  const createItem = (item) => {
-    console.log('creating')
-    // const newItem = { id: Date.now(), ...item }
-    // setItems([...items, newItem])
-    // localStorage.setItem('items', JSON.stringify([...items, newItem]))
-  }
+  useEffect(() => {
+    const savedItems = readClient()
+    setItems(savedItems)
+  }, [])
 
   const readItems = () => {
-    console.log('readItems')
-
-    // const savedItems = localStorage.getItem('items')
-    // return savedItems ? JSON.parse(savedItems) : items
+    const savedItems = readClient()
+    setItems(savedItems)
   }
 
+  const createItem = (item) => {
+    const newItem = { id: Date.now(), ...item }
+    createClient(newItem)
+    setItems([...items, newItem])
+
+    return {
+      id: newItem.id,
+      success: true
+    }
+  }
+
+  // const updateItem = (id, updatedItem) => {
+  //   const index = items.findIndex((item) => item.id === id)
+  //   if (index !== -1) {
+  //     const updatedItems = [...items]
+  //     updatedItems[index] = { ...updatedItems[index], ...updatedItem }
+  //     updateClient(index, updatedItems[index])
+  //     setItems(updatedItems)
+
+  //     return {
+  //       id,
+  //       success: true
+  //     }
+  //   }
+
+  //   return {
+  //     id,
+  //     success: false
+  //   }
+  // }
+
   const updateItem = (id, updatedItem) => {
-    console.log(id, updatedItem, 'updating')
-    // const updatedItems = items.map((item) =>
-    //   item.id === id ? { id, ...updatedItem } : item
-    // )
-    // setItems(updatedItems)
-    // localStorage.setItem('items', JSON.stringify(updatedItems))
+    const index = items.findIndex((item) => item.id === id)
+    if (index !== -1) {
+      const updatedItems = [...items]
+      updatedItems[index] = { ...updatedItems[index], ...updatedItem }
+      updateClient(index, updatedItems[index])
+      setItems(updatedItems)
+
+      return {
+        id,
+        success: true
+      }
+    }
+
+    return {
+      id,
+      success: false
+    }
   }
 
   const deleteItem = (id) => {
-    console.log(id, 'deleting')
-    // const updatedItems = items.filter((item) => item.id !== id)
-    // setItems(updatedItems)
-    // localStorage.setItem('items', JSON.stringify(updatedItems))
+    deleteClientById(id)
+    readItems()
   }
 
-  const openModal = (isClientEdit) => {
-    if (isClientEdit) {
-      setIsClientEdit(isClientEdit)
-    }
+  const getById = (id) => {
+    const client = items.find((item) => item.id === id)
 
+    setModal(true)
+    setIsClientEdit(client)
+  }
+
+  const openModal = () => {
     setModal(true)
   }
 
   const closeModal = () => {
-    if (isClientEdit) {
-      setIsClientEdit(null)
-    }
+    setIsClientEdit(null)
+    setModal(false)
 
     setModal(false)
   }
@@ -64,7 +108,9 @@ export const ClientProvider = ({ children }) => {
         deleteItem,
         modal,
         openModal,
-        closeModal
+        closeModal,
+        getById,
+        isClientEdit
       }}
     >
       {children}
