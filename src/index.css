@@ -1,0 +1,39 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+:root {
+  --primary-color: #064b56;
+  --secundary-color: #fff1cc;
+  --terciary-color: #f2f2f2;
+  --shadow-color: #ccc;
+  --text-color: #fff;
+}
+
+body {
+  height: 100vh;
+}
+
+main {
+  background-color: var(--secundary-color);
+}
+
+@media (max-width: 480px) {
+  header {
+    position: fixed;
+    width: 100%;
+  }
+  .header-title {
+    font-size: 1.5rem;
+  }
+
+  main {
+    padding: 0;
+    margin: 20px 0 0 0;
+    box-shadow: none;
+  }
+}
