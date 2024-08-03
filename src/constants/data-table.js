@@ -13,4 +13,13 @@ const actionsTable = [
   }
 ]
 
-export { actionsTable, columnsTable }
+const actionsModalTable = [
+  { id: 'salvar', color: 'blue', label: 'Salvar', type: 'submit' },
+  {
+    id: 'cancelar',
+    color: 'red',
+    label: 'Cancelar'
+  }
+]
+
+export { actionsModalTable, actionsTable, columnsTable }
