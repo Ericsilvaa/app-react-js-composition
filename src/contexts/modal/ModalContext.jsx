@@ -5,29 +5,22 @@ import { useClientContext } from '../../hooks/useClientContext'
 export const ModalContext = createContext()
 
 export const ModalProvider = ({ children }) => {
-  const [modal, setModal] = useState(false) // boolean
-  const { isClientEdit, setIsClientEdit } = useClientContext() // null or Client ID
+  const [modalVisible, setIsModalVisible] = useState(false) // boolean
+  const { clearClientEdit } = useClientContext() // null or Client ID
 
-  const openModal = (isClientEdit) => {
-    if (isClientEdit) {
-      setIsClientEdit(isClientEdit)
-    }
-
-    setModal(true)
+  const openModal = () => {
+    setIsModalVisible(true)
   }
 
   const closeModal = () => {
-    if (isClientEdit) {
-      setIsClientEdit(null)
-    }
-
-    setModal(false)
+    clearClientEdit()
+    setIsModalVisible(false)
   }
 
   return (
     <ModalContext.Provider
       value={{
-        modal,
+        modalVisible,
         openModal,
         closeModal
       }}

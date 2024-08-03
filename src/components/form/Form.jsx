@@ -1,13 +1,19 @@
 import { useEffect, useState } from 'react'
+import { actionsModalTable } from '../../constants/data-table'
 import { useClientContext } from '../../hooks/useClientContext'
+import { useModalContext } from '../../hooks/useModalContext'
 import { clearFields, validFields } from '../../utils/valid-fields'
-import ButtonModalActions from '../button/ButtonModalActions'
+import InfoActions from '../button/ButtonActions'
 import InputForm from '../input/InputForm'
 import './Form.css'
 
 const FormContainer = () => {
-  const { createItem, closeModal, isClientEdit, updateItem } =
-    useClientContext()
+  const { createItem, isClientEdit, updateItem } = useClientContext()
+  const { closeModal } = useModalContext()
+
+  const handleClick = () => {
+    closeModal()
+  }
 
   const [formData, setFormData] = useState({
     nome: '',
@@ -100,7 +106,7 @@ const FormContainer = () => {
         required
       />
 
-      <ButtonModalActions />
+      <InfoActions actions={actionsModalTable} onClick={handleClick} />
     </form>
   )
 }

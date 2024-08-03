@@ -1,32 +1,55 @@
 import { actionsTable } from '../../constants/data-table'
 import { useClientContext } from '../../hooks/useClientContext'
+import { useModalContext } from '../../hooks/useModalContext'
+import InfoActions from '../button/ButtonActions'
 import './records.css'
 import TableEmpty from './TableEmpty'
-import TableRow from './TableRow'
+import TableInfo from './TableInfo'
+import { TableRowItem } from './TableRowItem'
 
 const TableBody = () => {
-  const { items } = useClientContext()
+  const { items, deleteItem, getById } = useClientContext()
+  const { openModal } = useModalContext()
 
-  const itemsEmpty = !items.length
+  const handleClick = (btn) => {
+    const handleDeleteItem = () => {
+      deleteItem(btn.clientId)
+    }
 
-  const dataItems = items.map((item) => ({
-    id: item.id,
-    nome: item.nome,
-    email: item.email,
-    celular: item.celular,
-    cidade: item.cidade,
-    actions: actionsTable
-  }))
+    const handleOpenModal = () => {
+      getById(btn.clientId)
+      openModal()
+    }
+
+    return btn.id === 'editar' ? handleOpenModal() : handleDeleteItem()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }
+
+  if (!items.length) return <TableEmpty />
 
   return (
     <tbody className='table-container'>
-      {itemsEmpty && <TableEmpty />}
-      {!itemsEmpty &&
-        dataItems.map((row, rowIndex) => (
-          <tr className='tr-records' key={rowIndex}>
-            <TableRow row={row} />
-          </tr>
-        ))}
+      {items.map((row, rowIndex) => (
+        <TableRowItem key={rowIndex}>
+          <TableInfo
+            infos={
+              <>
+                <span>{row.nome}</span>
+                <span>{row.email}</span>
+                <span>{row.celular}</span>
+                <span>{row.cidade}</span>
+              </>
+            }
+            action={
+              <InfoActions
+                actions={actionsTable}
+                onClick={handleClick}
+                clientId={row.id}
+              />
+            }
+          />
+        </TableRowItem>
+      ))}
     </tbody>
   )
 }

@@ -1,15 +1,14 @@
-import { useClientContext } from '../../hooks/useClientContext'
+import { useModalContext } from '../../hooks/useModalContext'
 import FormContainer from '../form/Form'
 import ModalHeader from './ModalHeader'
 import './modal.css'
 
-// eslint-disable-next-line react-refresh/only-export-components
 const CustomModal = () => {
-  const { modal } = useClientContext()
+  const { modalVisible } = useModalContext()
 
   return (
     <>
-      {modal && (
+      {modalVisible && (
         <div className='modal-overlay'>
           <div className='modal-content'>
             <ModalHeader />
