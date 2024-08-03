@@ -1,4 +1,6 @@
-import { getLocalStorage, setLocalStorage } from './LocalStorage'
+import { getLocalStorage, setLocalStorage } from './localstorage-utils'
+
+const readClient = () => getLocalStorage()
 
 const deleteClientById = (id) => {
   const dbClient = getLocalStorage()
@@ -7,18 +9,29 @@ const deleteClientById = (id) => {
   return updatedDbClient
 }
 
-const updateClient = (index, client) => {
+const updateClient = (index, clients, updatedItem) => {
+  const updatedItems = [...clients]
+  updatedItems[index] = { ...updatedItems[index], ...updatedItem }
+
   const dbClient = getLocalStorage()
-  dbClient[index] = client
+  dbClient[index] = updatedItems[index]
   setLocalStorage(dbClient)
+
+  return updatedItems
 }
 
-const readClient = () => getLocalStorage()
+const createClient = (items, client) => {
+  const newClient = { id: Date.now(), ...client }
 
-const createClient = (client) => {
   const dbClient = getLocalStorage()
-  dbClient.push(client)
+  dbClient.push(newClient)
   setLocalStorage(dbClient)
+
+  return {
+    data: [...items, newClient],
+    success: true,
+    id: newClient.id
+  }
 }
 
 export { createClient, deleteClientById, readClient, updateClient }
