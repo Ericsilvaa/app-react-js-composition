@@ -10,14 +10,14 @@ import {
 export const ClientContext = createContext()
 
 export const ClientProvider = ({ children }) => {
-  const [modal, setModal] = useState(false) // boolean
-  const [isClientEdit, setIsClientEdit] = useState(null) // null or Client ID
-  const [items, setItems] = useState([]) // array
+  const [isClientEdit, setIsClientEdit] = useState(null)
+  const [items, setItems] = useState([])
 
-  useEffect(() => {
-    const savedItems = readClient()
-    setItems(savedItems)
-  }, [])
+  const getById = (id) => {
+    const client = items.find((item) => item.id === id)
+
+    setIsClientEdit(client)
+  }
 
   const readItems = () => {
     const savedItems = readClient()
@@ -25,43 +25,21 @@ export const ClientProvider = ({ children }) => {
   }
 
   const createItem = (item) => {
-    const newItem = { id: Date.now(), ...item }
-    createClient(newItem)
-    setItems([...items, newItem])
+    const { data, id } = createClient(items, item)
+
+    setItems(data)
 
     return {
-      id: newItem.id,
+      id,
+      data,
       success: true
     }
   }
 
-  // const updateItem = (id, updatedItem) => {
-  //   const index = items.findIndex((item) => item.id === id)
-  //   if (index !== -1) {
-  //     const updatedItems = [...items]
-  //     updatedItems[index] = { ...updatedItems[index], ...updatedItem }
-  //     updateClient(index, updatedItems[index])
-  //     setItems(updatedItems)
-
-  //     return {
-  //       id,
-  //       success: true
-  //     }
-  //   }
-
-  //   return {
-  //     id,
-  //     success: false
-  //   }
-  // }
-
   const updateItem = (id, updatedItem) => {
     const index = items.findIndex((item) => item.id === id)
     if (index !== -1) {
-      const updatedItems = [...items]
-      updatedItems[index] = { ...updatedItems[index], ...updatedItem }
-      updateClient(index, updatedItems[index])
-      setItems(updatedItems)
+      setItems(updateClient(index, items, updatedItem))
 
       return {
         id,
@@ -80,40 +58,47 @@ export const ClientProvider = ({ children }) => {
     readItems()
   }
 
-  const getById = (id) => {
-    const client = items.find((item) => item.id === id)
-
-    setModal(true)
-    setIsClientEdit(client)
-  }
-
-  const openModal = () => {
-    setModal(true)
-  }
-
-  const closeModal = () => {
+  const clearClientEdit = () => {
     setIsClientEdit(null)
-    setModal(false)
+  }
 
-    setModal(false)
+  useEffect(() => {
+    const savedItems = readClient()
+    setItems(savedItems)
+  }, [])
+
+  const value = {
+    items,
+    createItem,
+    readItems,
+    updateItem,
+    deleteItem,
+    getById,
+    isClientEdit,
+    clearClientEdit
   }
 
   return (
-    <ClientContext.Provider
-      value={{
-        items,
-        createItem,
-        readItems,
-        updateItem,
-        deleteItem,
-        modal,
-        openModal,
-        closeModal,
-        getById,
-        isClientEdit
-      }}
-    >
-      {children}
-    </ClientContext.Provider>
+    <ClientContext.Provider {...{ value }}>{children}</ClientContext.Provider>
   )
 }
+
+// const updateItem = (id, updatedItem) => {
+//   const index = items.findIndex((item) => item.id === id)
+//   if (index !== -1) {
+//     const updatedItems = [...items]
+//     updatedItems[index] = { ...updatedItems[index], ...updatedItem }
+//     updateClient(index, updatedItems[index])
+//     setItems(updatedItems)
+
+//     return {
+//       id,
+//       success: true
+//     }
+//   }
+
+//   return {
+//     id,
+//     success: false
+//   }
+// }
