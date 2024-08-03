@@ -4,7 +4,7 @@ import { useModalContext } from '../../hooks/useModalContext'
 import CustomButton from './button'
 import './button.css'
 
-const BodyActions = ({ renderActions, clientId }) => {
+const InfoActions = ({ renderActions, clientId }) => {
   const { deleteItem, getById } = useClientContext()
   const { openModal } = useModalContext()
 
@@ -38,9 +38,9 @@ const BodyActions = ({ renderActions, clientId }) => {
   )
 }
 
-BodyActions.propTypes = {
+InfoActions.propTypes = {
   renderActions: PropTypes.array,
   clientId: PropTypes.number
 }
 
-export default BodyActions
+export default InfoActions

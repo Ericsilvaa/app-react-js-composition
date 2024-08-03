@@ -1,32 +1,35 @@
 import { actionsTable } from '../../constants/data-table'
 import { useClientContext } from '../../hooks/useClientContext'
+import InfoActions from '../button/ButtonActions'
 import './records.css'
 import TableEmpty from './TableEmpty'
-import TableRow from './TableRow'
+import TableInfo from './TableInfo'
+import { TableRowItem } from './TableRowItem'
 
 const TableBody = () => {
   const { items } = useClientContext()
 
-  const itemsEmpty = !items.length
-
-  const dataItems = items.map((item) => ({
-    id: item.id,
-    nome: item.nome,
-    email: item.email,
-    celular: item.celular,
-    cidade: item.cidade,
-    actions: actionsTable
-  }))
+  if (!items.length) return <TableEmpty />
 
   return (
     <tbody className='table-container'>
-      {itemsEmpty && <TableEmpty />}
-      {!itemsEmpty &&
-        dataItems.map((row, rowIndex) => (
-          <tr className='tr-records' key={rowIndex}>
-            <TableRow row={row} />
-          </tr>
-        ))}
+      {items.map((row, rowIndex) => (
+        <TableRowItem key={rowIndex}>
+          <TableInfo
+            infos={
+              <>
+                <span>{row.nome}</span>
+                <span>{row.email}</span>
+                <span>{row.celular}</span>
+                <span>{row.cidade}</span>
+              </>
+            }
+            action={
+              <InfoActions renderActions={actionsTable} clientId={row.id} />
+            }
+          />
+        </TableRowItem>
+      ))}
     </tbody>
   )
 }
