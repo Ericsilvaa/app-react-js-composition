@@ -15,9 +15,11 @@ const TableHeader = () => {
   return (
     <thead className='table-header'>
       <TableRowItem classNames='tr-records'>
-        {columnsTable.map((column, index) => (
-          <TableHeaderItem key={index} column={column} />
-        ))}
+        <>
+          {columnsTable.map((column, index) => (
+            <TableHeaderItem key={index} column={column} />
+          ))}
+        </>
       </TableRowItem>
     </thead>
   )
