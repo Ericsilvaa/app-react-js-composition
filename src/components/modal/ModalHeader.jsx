@@ -1,8 +1,10 @@
 import { useClientContext } from '../../hooks/useClientContext'
+import { useModalContext } from '../../hooks/useModalContext'
 import './modal.css'
 
 const ModalHeader = () => {
-  const { closeModal, isClientEdit } = useClientContext()
+  const { isClientEdit } = useClientContext()
+  const { closeModal } = useModalContext()
 
   return (
     <header className='modal-header'>

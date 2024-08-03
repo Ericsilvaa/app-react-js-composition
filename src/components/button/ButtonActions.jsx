@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types'
 import { useClientContext } from '../../hooks/useClientContext'
+import { useModalContext } from '../../hooks/useModalContext'
 import CustomButton from './button'
 import './button.css'
 
 const BodyActions = ({ renderActions, clientId }) => {
   const { deleteItem, getById } = useClientContext()
+  const { openModal } = useModalContext()
 
   const handleClick = (btn) => {
     const handleDeleteItem = () => {
@@ -13,6 +15,7 @@ const BodyActions = ({ renderActions, clientId }) => {
 
     const handleOpenModal = () => {
       getById(btn.clientId)
+      openModal()
     }
 
     return btn.id === 'editar' ? handleOpenModal : handleDeleteItem

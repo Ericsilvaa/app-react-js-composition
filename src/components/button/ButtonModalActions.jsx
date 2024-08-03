@@ -1,9 +1,9 @@
-import { useClientContext } from '../../hooks/useClientContext'
+import { useModalContext } from '../../hooks/useModalContext'
 import CustomButton from './button'
 import './button.css'
 
 const ButtonModalActions = () => {
-  const { closeModal } = useClientContext()
+  const { closeModal } = useModalContext()
 
   return (
     <div className='button-actions-container'>

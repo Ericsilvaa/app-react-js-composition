@@ -1,9 +1,9 @@
-import { useClientContext } from '../../hooks/useClientContext'
+import { useModalContext } from '../../hooks/useModalContext'
 import CustomButton from '../button/button'
 import './Header.css'
 
 const HeaderBase = () => {
-  const { openModal } = useClientContext()
+  const { openModal } = useModalContext()
 
   return (
     <header className='header-container'>

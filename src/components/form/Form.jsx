@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useClientContext } from '../../hooks/useClientContext'
+import { useModalContext } from '../../hooks/useModalContext'
 import { clearFields, validFields } from '../../utils/valid-fields'
 import ButtonModalActions from '../button/ButtonModalActions'
 import InputForm from '../input/InputForm'
 import './Form.css'
 
 const FormContainer = () => {
-  const { createItem, closeModal, isClientEdit, updateItem } =
-    useClientContext()
+  const { createItem, isClientEdit, updateItem } = useClientContext()
+  const { closeModal } = useModalContext()
 
   const [formData, setFormData] = useState({
     nome: '',
